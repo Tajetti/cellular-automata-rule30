@@ -1,16 +1,106 @@
-# React + Vite
+# Autômatos Celulares - Visualização de Regras
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Uma aplicação React para visualização de autômatos celulares elementares, implementando as regras 30, 90 e 110.
 
-Currently, two official plugins are available:
+## 🔬 Sobre Autômatos Celulares
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Autômatos celulares são modelos matemáticos discretos que consistem em uma grade de células, onde cada célula pode estar em um de vários estados. O estado de cada célula evolui ao longo de passos discretos de acordo com regras baseadas nos estados das células vizinhas.
 
-## React Compiler
+Este projeto implementa **autômatos celulares elementares**, onde:
+- Cada célula pode estar em um de dois estados (0 ou 1)
+- O próximo estado de uma célula depende de seu estado atual e dos estados de seus dois vizinhos
+- Existem 256 regras possíveis (2^8), numeradas de 0 a 255
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Regras Implementadas
 
-## Expanding the ESLint configuration
+- **Regra 30**: Produz um padrão caótico e é usado em geradores de números aleatórios
+- **Regra 90**: Produz o triângulo de Sierpinski, um fractal famoso
+- **Regra 110**: Demonstrada como sendo Turing-completa, capaz de computação universal
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Como Executar
+
+### Pré-requisitos
+
+- Node.js (versão 16 ou superior)
+- npm ou yarn
+
+### Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/Tajetti/cellular-automata-rule30.git
+
+# Entre no diretório
+cd rule-automata
+
+# Instale as dependências
+npm install
+```
+
+### Executar em desenvolvimento
+
+```bash
+npm run dev
+```
+
+Acesse `http://localhost:5173` no seu navegador.
+
+### Build para produção
+
+```bash
+npm run build
+```
+
+### Preview da build
+
+```bash
+npm run preview
+```
+
+## 🛠️ Tecnologias
+
+- **React 19** - Biblioteca para construção da interface
+- **Vite** - Build tool e dev server
+- **CSS3** - Estilização responsiva
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── App.jsx         # Componente principal com lógica dos autômatos
+├── App.css         # Estilos da aplicação
+├── main.jsx        # Ponto de entrada
+└── index.css       # Estilos globais
+```
+
+## 🧮 Como Funciona
+
+A função `applyRule` implementa a lógica do autômato celular:
+
+```javascript
+function applyRule(row, ruleNumber) {
+  const next = [];
+  for (let i = 0; i < row.length; i++) {
+    const left = row[i - 1] || 0;
+    const middle = row[i] || 0;
+    const right = row[i + 1] || 0;
+    
+    // Converte o padrão de 3 bits em um índice (0-7)
+    const pattern = (left << 2) | (middle << 1) | right;
+    
+    // Aplica a regra usando operação bitwise
+    next[i] = (ruleNumber >> pattern) & 1;
+  }
+  return next;
+}
+```
+
+Cada padrão de 3 células (esquerda, centro, direita) mapeia para um bit específico no número da regra.
+
+## 📝 Licença
+
+Este projeto é de código aberto e está disponível sob a licença MIT.
+
+## 👨‍💻 Autor
+
+Desenvolvido como estudo de autômatos celulares e React.
